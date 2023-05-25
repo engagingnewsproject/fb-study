@@ -171,7 +171,7 @@ class FFacebook extends Component {
   render() {
     return (
       <div id="app">
-        <div class="site-header">
+        <div className="site-header">
         </div>
         <div>
           {this.state.static.posts && this.state.static.posts.map((post, index) => {
