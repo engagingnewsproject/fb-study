@@ -22,14 +22,14 @@ class ReportPopup extends Component {
     render() {
         let { post } = this.props;
         return (<dialog>
-            <div class="modal-mask">
-                <div class="modal-wrap">
-                    <div class="modal" id="modal">
-                        <button class="modal__close" onClick={() => { this.props.toggleReport(); }}> <i class="i-close"></i></button>
-                        <div class="modal__content">
+            <div className="modal-mask">
+                <div className="modal-wrap">
+                    <div className="modal" id="modal">
+                        <button className="modal__close" onClick={() => { this.props.toggleReport(); }}> <i className="i-close"></i></button>
+                        <div className="modal__content">
                             <p className="post__content">
                                 You can report this after selecting a problem. Please note we have fewer reviewers available right now.</p>
-                            <div class="report-post-container">
+                            <div className="report-post-container">
                                 {
                                     this.state.reasons.map((reason, index) => {
                                         return <button key={index} className={`report-post-button ${this.state.reason == reason ? 'report-post-button-selected' : ''}`}
@@ -39,10 +39,10 @@ class ReportPopup extends Component {
                                     })
                                 }
                             </div>
-                            <footer class="modal__footer">
+                            <footer className="modal__footer">
                                 <div>
-                                    <button class="modal__button modal__button--undo" onClick={() => { this.props.toggleReport(); }}>Undo</button>
-                                    <button class="modal__button modal__button--done" onClick={() => { this.props.reportPost(post.post_id, this.state.reason); }}>Report</button>
+                                    <button className="modal__button modal__button--undo" onClick={() => { this.props.toggleReport(); }}>Undo</button>
+                                    <button className="modal__button modal__button--done" onClick={() => { this.props.reportPost(post.post_id, this.state.reason); }}>Report</button>
                                 </div >
                             </footer >
                         </div >

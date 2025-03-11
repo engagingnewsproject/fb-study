@@ -8,14 +8,14 @@ class SharePopup extends Component {
     render() {
         let { post } = this.props;
         return (<dialog>
-            <div class="modal-mask">
-                <div class="modal-wrap">
-                    <div class="modal" id="modal">
-                        <header class="modal__header">
+            <div className="modal-mask">
+                <div className="modal-wrap">
+                    <div className="modal" id="modal">
+                        <header className="modal__header">
                             <h3>Share this post?</h3>
                         </header>
-                        <button class="modal__close" onClick={() => { this.props.toggleShare(); }}> <i class="i-close"></i></button>
-                        <div class="modal__content">
+                        <button className="modal__close" onClick={() => { this.props.toggleShare(); }}> <i className="i-close"></i></button>
+                        <div className="modal__content">
                             <p className="post__content">{post.content.caption}</p>
                             {post.post_type === "photo" &&
                                 <div className="post__photo">
@@ -37,10 +37,10 @@ class SharePopup extends Component {
                                     </a>
                                 </div>
                             }
-                            <footer class="modal__footer">
+                            <footer className="modal__footer">
                                 <div>
-                                    <button class="modal__button modal__button--undo" onClick={() => { this.props.toggleShare(); }}>Undo</button>
-                                    <button class="modal__button modal__button--done" onClick={() => { this.props.sharePost(post.post_id); }}>Share</button>
+                                    <button className="modal__button modal__button--undo" onClick={() => { this.props.toggleShare(); }}>Undo</button>
+                                    <button className="modal__button modal__button--done" onClick={() => { this.props.sharePost(post.post_id); }}>Share</button>
                                 </div >
                             </footer >
                         </div >

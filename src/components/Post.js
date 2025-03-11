@@ -159,9 +159,9 @@ class Post extends Component {
                                     <a className="post__like">
                                         {post.community && 
                                             <span className={`footer__text post__like-text ${this.state.reaction ? this.state.reaction.id : ""}`}>
-                                                <img class="react-image" src={reacts[0].img}/> 
-                                                <img class="react-image" src={reacts[1].img}/> 
-                                                <img class="react-image" src={reacts[2].img}/> 
+                                                <img className="react-image" src={reacts[0].img}/> 
+                                                <img className="react-image" src={reacts[1].img}/> 
+                                                <img className="react-image" src={reacts[2].img}/> 
                                             </span>
                                         }
                                         {  // this dictates whether to display "like" or not"
