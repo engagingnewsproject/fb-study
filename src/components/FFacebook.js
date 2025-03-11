@@ -218,7 +218,7 @@ class FFacebook extends Component {
         {this.state.postToReport &&
           <ReportPopup post={this.state.postToReport} toggleReport={this.toggleReport} reportPost={this.reportPost}></ReportPopup>
         }
-        <button onClick={this.testLogging}>Test Logger</button>
+        {/* <button onClick={this.testLogging}>Test Logger</button> */}
       </div>
     );
   }
