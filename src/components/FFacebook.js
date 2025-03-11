@@ -174,19 +174,19 @@ class FFacebook extends Component {
         <div className="site-header">
         </div>
         <div>
-          {this.state.static.posts && this.state.static.posts.map((post, index) => {
+          {this.state.static.posts && this.state.static.posts.map((post) => {
             if (!post.is_hidden)
               return <Post
+                key={`post-${post.post_id}`}
                 post={post} 
-                // key={index}
                 getUserObj={this.getUserObject}
                 toggleArticle={this.toggleArticle}
                 toggleShare={this.toggleShare}
                 sharePost={this.sharePost}
                 hidePost={this.hidePost}
-                // index={index}
                 toggleReport={this.toggleReport}
               />;
+            return null;
           })}
         </div>
 
