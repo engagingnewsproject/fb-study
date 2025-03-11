@@ -7,7 +7,7 @@ import ArticleModal from './ArticleModal';
 import app from "../util/firebase.js";
 import SharePopup from "./SharePopup";
 import ReportPopup from "./ReportPopup";
-import Logger from '../logging/Logger';
+import Logger from '../logging';
 import { invalidUserID } from '../util/util';
 var uuid = require("uuid");
 
@@ -168,6 +168,25 @@ class FFacebook extends Component {
     }
   };
 
+  // testLogging = () => {
+  //   // First set required localStorage values if not present
+  //   if (!localStorage.getItem('user_id')) {
+  //       localStorage.setItem('user_id', 'test_user_' + Date.now());
+  //   }
+  //   if (!localStorage.getItem('ip_address')) {
+  //       localStorage.setItem('ip_address', '127.0.0.1');
+  //   }
+  //   if (!localStorage.getItem('varied_post')) {
+  //       localStorage.setItem('varied_post', 'true');
+  //   }
+
+  //   // Now try logging
+  //   Logger.log_action('test', 'Testing logging system', {
+  //       post_id: 'test123',
+  //       article_id: 'article123'
+  //   });
+  // };
+
   render() {
     return (
       <div id="app">
@@ -199,6 +218,7 @@ class FFacebook extends Component {
         {this.state.postToReport &&
           <ReportPopup post={this.state.postToReport} toggleReport={this.toggleReport} reportPost={this.reportPost}></ReportPopup>
         }
+        <button onClick={this.testLogging}>Test Logger</button>
       </div>
     );
   }

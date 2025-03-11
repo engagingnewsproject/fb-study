@@ -15,6 +15,17 @@ const firebase_config = {
 };
 
 const app = firebase.initializeApp(firebase_config);
+
+// // Test database connection
+// const dbRef = firebase.database().ref('.info/connected');
+// dbRef.on('value', (snap) => {
+//     if (snap.val() === true) {
+//         console.log('Connected to Firebase Realtime Database');
+//     } else {
+//         console.log('Not connected to Firebase Realtime Database');
+//     }
+// });
+
 firebase.analytics();
 
 export default app;
