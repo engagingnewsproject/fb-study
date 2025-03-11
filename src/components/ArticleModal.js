@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Logger from '../logging/Logger';
 
 import '../css/article.css';
 

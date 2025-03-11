@@ -7,7 +7,7 @@ import ArticleModal from './ArticleModal';
 import app from "../util/firebase.js";
 import SharePopup from "./SharePopup";
 import ReportPopup from "./ReportPopup";
-import Logger from '../logging';
+import Logger from '../logging/Logger';
 import { invalidUserID } from '../util/util';
 var uuid = require("uuid");
 
