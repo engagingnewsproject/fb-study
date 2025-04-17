@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
 import '../css/fb.css';
 import Post from './Post';
-import config from '../config';
 import firebase from 'firebase';
 import ArticleModal from './ArticleModal';
-import app from "../util/firebase.js";
 import SharePopup from "./SharePopup";
 import ReportPopup from "./ReportPopup";
 import Logger from '../logging/Logger';
@@ -75,7 +73,7 @@ class FFacebook extends Component {
 
   toggleShare = (post_id = null) => {
     let post = post_id;
-    if (post != null) {
+    if (post !== null) {
       post = this.state.static.posts.find(p => post === p.post_id);
     }
     this.setState({ postToShare: post }, () => {
@@ -89,7 +87,7 @@ class FFacebook extends Component {
 
   toggleReport = (post_id = null) => {
     let post = post_id;
-    if (post != null) {
+    if (post !== null) {
       post = this.state.static.posts.find(p => post === p.post_id);
     }
     this.setState({ postToReport: post }, () => {
@@ -124,18 +122,15 @@ class FFacebook extends Component {
       }
       // show vary is a bool value
       if (settings.show_varied) {
-         //now do the random varying and Log that in the
          let num_varied_needed = settings.num_varied;
          let num_posts_overall = settings.num_posts_overall;
-         // let control_posts = static_data.posts.filter(post => post.meta.type == 'misc' || post.meta.type == 'control').slice(0, num_posts_overall - num_varied_needed);
          
-         // get control posts ///////////
-         let control_posts = static_data.posts.filter(post => post.post_id >= 5 && post.post_id <=7);
-        //  console.log(control_posts);
+         // get control posts
+         let control_posts = static_data.posts.filter(post => post.post_id >= 5 && post.post_id <= 7);
  
          // get varied posts
-         let varied = static_data.posts.filter(post => post.meta.type != 'misc' && post.meta.type != 'control');
-         varied.push(static_data.posts.find(post => post.post_id == 15));
+         let varied = static_data.posts.filter(post => post.meta.type !== 'misc' && post.meta.type !== 'control');
+         varied.push(static_data.posts.find(post => post.post_id === 15));
          varied = (varied.sort(() => Math.random() - 0.5)).slice(0, num_varied_needed);
    
          // randomized last 4 posts
@@ -145,15 +140,15 @@ class FFacebook extends Component {
          Logger.log_action('User begins', 'User Enters Site & Begins Experiment');
       }
       else {
-        static_data.posts = static_data.posts.filter(post => post.meta.type == 'misc');
+        static_data.posts = static_data.posts.filter(post => post.meta.type === 'misc');
       }
 
       // set state
       this.setState({ static: static_data, settings: settings });
     } catch (e) {
-      console.log(e);
-    } finally {
-      // do the error handling here
+      console.error('Error loading data:', e);
+      // You might want to set some error state here
+      this.setState({ error: 'Failed to load data. Please refresh the page.' });
     }
   }
 
@@ -167,25 +162,6 @@ class FFacebook extends Component {
       this.setState({ static: this.state.static });
     }
   };
-
-  // testLogging = () => {
-  //   // First set required localStorage values if not present
-  //   if (!localStorage.getItem('user_id')) {
-  //       localStorage.setItem('user_id', 'test_user_' + Date.now());
-  //   }
-  //   if (!localStorage.getItem('ip_address')) {
-  //       localStorage.setItem('ip_address', '127.0.0.1');
-  //   }
-  //   if (!localStorage.getItem('varied_post')) {
-  //       localStorage.setItem('varied_post', 'true');
-  //   }
-
-  //   // Now try logging
-  //   Logger.log_action('test', 'Testing logging system', {
-  //       post_id: 'test123',
-  //       article_id: 'article123'
-  //   });
-  // };
 
   render() {
     return (
@@ -218,7 +194,6 @@ class FFacebook extends Component {
         {this.state.postToReport &&
           <ReportPopup post={this.state.postToReport} toggleReport={this.toggleReport} reportPost={this.reportPost}></ReportPopup>
         }
-        {/* <button onClick={this.testLogging}>Test Logger</button> */}
       </div>
     );
   }
