@@ -133,11 +133,41 @@ The application is hosted on Firebase Hosting at: https://cme-facebook-2.web.app
    firebase deploy --only hosting
    ```
 
-#### Automated Deployments:
+#### Automated Deployments
 
-The project is configured with GitHub Actions for automated deployments:
-- Pull request previews are automatically deployed
-- Changes to the main branch trigger a deployment to production
+The project uses a two-branch strategy for deployments:
+- `master`: Development branch for ongoing work
+- `prod`: Production branch that triggers deployments to Firebase Hosting
+
+Preview Deployments:
+- Pull requests to either `master` or `prod` automatically get preview deployments
+- Preview URLs are posted in the pull request comments
+- Preview deployments expire after 7 days
+- Only PRs from branches in this repository will get previews (forks excluded)
+
+Deployment workflow:
+1. Development work is done on feature branches
+2. Create a pull request to `master`:
+   ```bash
+   git checkout -b feature-name
+   git add .
+   git commit -m "your changes"
+   git push origin feature-name
+   # Create PR through GitHub interface
+   ```
+   - A preview deployment will be created automatically
+   - Review and merge into `master` when ready
+
+3. When ready to deploy to production:
+   ```bash
+   git checkout prod
+   git merge master
+   git push origin prod
+   ```
+   - Create a PR if you want a final preview deployment
+   - Once merged to `prod`, changes will automatically deploy to the live site
+
+The live site is always deployed from the `prod` branch at: https://cme-facebook-2.web.app
 
 ### Post-Deployment Steps
 
