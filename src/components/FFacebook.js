@@ -7,6 +7,7 @@ import SharePopup from "./SharePopup";
 import ReportPopup from "./ReportPopup";
 import Logger from '../logging/Logger';
 import { invalidUserID } from '../util/util';
+import { testAnalytics } from '../util/testAnalytics';
 var uuid = require("uuid");
 
 class FFacebook extends Component {
@@ -39,6 +40,15 @@ class FFacebook extends Component {
           localStorage.setItem("ip_address", res.ip);
         })
         .catch(err => console.log(err));
+    }
+
+    // Enable Firebase Analytics debug mode
+    if (process.env.NODE_ENV === 'development') {
+        firebase.analytics().setAnalyticsCollectionEnabled(true);
+        firebase.analytics().setCurrentScreen('home');
+        
+        // Add console logging for debugging
+        console.log('Firebase Analytics enabled in development mode');
     }
   }
 
@@ -116,24 +126,17 @@ class FFacebook extends Component {
       let static_data = await (await firebase.database().ref(`static`).once('value')).val();
       let settings = await (await firebase.database().ref(`settings`).once('value')).val();
 
-      // random_post is a bool value
       if (settings.random_posts) {
         static_data.posts = static_data.posts.sort(() => Math.random() - 0.5);
       }
-      // show vary is a bool value
       if (settings.show_varied) {
          let num_varied_needed = settings.num_varied;
-         let num_posts_overall = settings.num_posts_overall;
          
-         // get control posts
          let control_posts = static_data.posts.filter(post => post.post_id >= 5 && post.post_id <= 7);
- 
-         // get varied posts
          let varied = static_data.posts.filter(post => post.meta.type !== 'misc' && post.meta.type !== 'control');
          varied.push(static_data.posts.find(post => post.post_id === 15));
          varied = (varied.sort(() => Math.random() - 0.5)).slice(0, num_varied_needed);
    
-         // randomized last 4 posts
          static_data.posts = (control_posts.concat(varied)).sort(() => Math.random() - 0.5);
  
          localStorage.setItem('varied_post', JSON.stringify(varied[0]));
@@ -143,7 +146,6 @@ class FFacebook extends Component {
         static_data.posts = static_data.posts.filter(post => post.meta.type === 'misc');
       }
 
-      // set state
       this.setState({ static: static_data, settings: settings });
     } catch (e) {
       console.error('Error loading data:', e);
@@ -184,6 +186,32 @@ class FFacebook extends Component {
             return null;
           })}
         </div>
+
+        {/* Add the test analytics button */}
+        {process.env.NODE_ENV === 'development' && (
+          <button 
+            onClick={() => {
+              console.log('Testing analytics...');
+              testAnalytics();
+            }}
+            style={{
+              position: 'fixed',
+              bottom: '20px',
+              right: '20px',
+              zIndex: 1000,
+              padding: '10px',
+              background: '#4267b2',
+              color: 'white',
+              border: 'none',
+              borderRadius: '5px',
+              cursor: 'pointer',
+              fontSize: '14px',
+              fontWeight: 'bold'
+            }}
+          >
+            Test Analytics
+          </button>
+        )}
 
         {this.state.articleToShow &&
           <ArticleModal article={this.state.articleToShow} toggleArticle={this.toggleArticle}></ArticleModal>

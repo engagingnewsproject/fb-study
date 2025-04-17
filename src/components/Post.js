@@ -4,7 +4,7 @@ import { getImageURL } from '../util/util';
 import '../css/post.css';
 import Logger from '../logging/Logger';
 import * as timeago from 'timeago.js';
-
+import firebase from '../util/firebase';
 
 import Reactions from './Reactions';
 
@@ -46,7 +46,17 @@ class Post extends Component {
 
     submitComment = (event) => {
         if (event.key === 'Enter' && this.state.currentComment) {
-            Logger.log_action('comment', 'submit', { post_id: this.state.post.post_id, comment: this.state.currentComment });
+            Logger.log_action('comment', 'submit', { 
+                post_id: this.state.post.post_id, 
+                comment: this.state.currentComment 
+            });
+            
+            // Log to Firebase Analytics
+            firebase.analytics().logEvent('comment_submit', {
+                post_id: this.state.post.post_id,
+                comment_length: this.state.currentComment.length
+            });
+
             let comment_obj = {
                 "user_id": "Me",
                 "time": "now",
@@ -62,14 +72,27 @@ class Post extends Component {
         if ((this.state.reaction && this.state.reaction.id === id) || id === 'close') {
             reaction = null;
             if (this.state.reaction) {
-                Logger.log_action('reaction', `undo ${this.state.reaction.id}`, { post_id: this.props.post.post_id });
+                Logger.log_action('reaction', `undo ${this.state.reaction.id}`, { 
+                    post_id: this.props.post.post_id,
+                    reaction_type: this.state.reaction.id 
+                });
             }
         }
         this.setState({
             reaction: reaction,
         }, () => {
-            if (this.state.reaction)
-                Logger.log_action('reaction', `set ${this.state.reaction.id}`, { post_id: this.props.post.post_id });
+            if (this.state.reaction) {
+                Logger.log_action('reaction', `set ${this.state.reaction.id}`, { 
+                    post_id: this.props.post.post_id,
+                    reaction_type: this.state.reaction.id 
+                });
+                
+                // Log to Firebase Analytics
+                firebase.analytics().logEvent('reaction_set', {
+                    post_id: this.props.post.post_id,
+                    reaction_type: this.state.reaction.id
+                });
+            }
         });
     };
 
@@ -80,13 +103,28 @@ class Post extends Component {
         if ((curr_com.reaction && curr_com.reaction.id === id) || id === 'close') {
             reaction = null;
             if (curr_com.reaction) {
-                Logger.log_action('reaction', `comment: undo ${curr_com.reaction.id}`, { post_id: this.props.post.post_id, comment: curr_com.content });
+                Logger.log_action('reaction', `comment: undo ${curr_com.reaction.id}`, { 
+                    post_id: this.props.post.post_id, 
+                    comment: curr_com.content,
+                    reaction_type: curr_com.reaction.id
+                });
             }
         }
         comments[comment_index].reaction = reaction;
         this.setState({ comments: comments }, () => {
-            if (curr_com.reaction)
-                Logger.log_action('reaction', `comment: set ${curr_com.reaction.id}`, { post_id: this.props.post.post_id, comment: curr_com.content });
+            if (curr_com.reaction) {
+                Logger.log_action('reaction', `comment: set ${curr_com.reaction.id}`, { 
+                    post_id: this.props.post.post_id, 
+                    comment: curr_com.content,
+                    reaction_type: curr_com.reaction.id
+                });
+                
+                // Log to Firebase Analytics
+                firebase.analytics().logEvent('comment_reaction_set', {
+                    post_id: this.props.post.post_id,
+                    reaction_type: curr_com.reaction.id
+                });
+            }
         });
     };
 

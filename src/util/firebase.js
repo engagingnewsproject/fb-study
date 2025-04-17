@@ -1,6 +1,7 @@
 import firebase from "firebase/app"
 import "firebase/auth";
 import "firebase/database";
+import "firebase/analytics";
 
 
 const firebase_config = {
@@ -28,4 +29,4 @@ const app = firebase.initializeApp(firebase_config);
 
 firebase.analytics();
 
-export default app;
+export default firebase;
